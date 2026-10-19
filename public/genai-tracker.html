@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, viewport-fit=cover"
+        />
+        <title>Gen AI with Python: Learning Plan & Tracker</title>
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Instrument+Sans:wght@400;500;600&display=swap"
+        />
+        <style>
+            :root {
+                --bg: #ebf0ee;
+                --panel: #fafcfb;
+                --ink: #12243a;
+                --mute: #5a6b7d;
+                --line: #cbd6d2;
+                --acc: #2d55d9;
+                --acc2: #e2a400;
+                --ok: #1f8a5b;
+                --code: #e1e8e5;
+                box-sizing: border-box;
+                padding-top: env(safe-area-inset-top, 0px);
+                padding-bottom: env(safe-area-inset-bottom, 0px);
+            }
+            @media (prefers-color-scheme: dark) {
+                :root:not([data-theme="light"]) {
+                    --bg: #0f1a26;
+                    --panel: #16263a;
+                    --ink: #e6eef5;
+                    --mute: #92a4b7;
+                    --line: #2a3e55;
+                    --acc: #7fa2ff;
+                    --acc2: #f2be3a;
+                    --ok: #4fc590;
+                    --code: #0d1722;
+                }
+            }
+            :root[data-theme="dark"] {
+                --bg: #0f1a26;
+                --panel: #16263a;
+                --ink: #e6eef5;
+                --mute: #92a4b7;
+                --line: #2a3e55;
+                --acc: #7fa2ff;
+                --acc2: #f2be3a;
+                --ok: #4fc590;
+                --code: #0d1722;
+            }
+            html {
+                scroll-padding-top: env(safe-area-inset-top, 0px);
+                height: 100%;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            body {
+                margin: 0;
+                background: var(--bg);
+                color: var(--ink);
+                font:
+                    16px/1.6 "Instrument Sans",
+                    system-ui,
+                    sans-serif;
+            }
+            .wrap {
+                max-width: 880px;
+                margin: 0 auto;
+                padding: 20px 16px 60px;
+            }
+            h1,
+            h2,
+            h3 {
+                font-family:
+                    "Bricolage Grotesque", "Instrument Sans", system-ui,
+                    sans-serif;
+                line-height: 1.15;
+                margin: 0;
+            }
+            h1 {
+                font-size: clamp(28px, 6vw, 44px);
+                font-weight: 800;
+            }
+            .lead {
+                color: var(--mute);
+                max-width: 60ch;
+                margin: 10px 0 18px;
+            }
+            .top {
+                position: sticky;
+                top: env(safe-area-inset-top, 0px);
+                z-index: 5;
+                background: var(--bg);
+                padding: 10px 0;
+                border-bottom: 1px solid var(--line);
+            }
+            .bar {
+                height: 10px;
+                background: var(--line);
+                border-radius: 6px;
+                overflow: hidden;
+            }
+            .bar i {
+                display: block;
+                height: 100%;
+                width: 0;
+                background: var(--acc);
+                transition: width 0.3s;
+            }
+            .row {
+                display: flex;
+                justify-content: space-between;
+                gap: 10px;
+                font-size: 14px;
+                color: var(--mute);
+                margin-top: 6px;
+                align-items: center;
+            }
+            button {
+                font: inherit;
+                cursor: pointer;
+                border: 1px solid var(--line);
+                background: var(--panel);
+                color: var(--ink);
+                padding: 6px 12px;
+                border-radius: 8px;
+            }
+            button:hover {
+                border-color: var(--acc);
+            }
+            :focus-visible {
+                outline: 3px solid var(--acc2);
+                outline-offset: 2px;
+            }
+            .phase {
+                background: var(--panel);
+                border: 1px solid var(--line);
+                border-radius: 12px;
+                margin: 16px 0;
+                overflow: hidden;
+            }
+            .phase > summary {
+                list-style: none;
+                cursor: pointer;
+                padding: 16px;
+                display: grid;
+                grid-template-columns: auto 1fr auto;
+                gap: 14px;
+                align-items: center;
+            }
+            .phase > summary::-webkit-details-marker {
+                display: none;
+            }
+            .badge {
+                width: 42px;
+                height: 42px;
+                border-radius: 50%;
+                display: grid;
+                place-items: center;
+                font:
+                    800 17px "Bricolage Grotesque",
+                    sans-serif;
+                background: var(--acc);
+                color: #fff;
+            }
+            .phase.done .badge {
+                background: var(--ok);
+            }
+            .meta {
+                font-size: 13px;
+                color: var(--mute);
+            }
+            .pct {
+                font-weight: 600;
+                font-size: 14px;
+            }
+            .body {
+                padding: 0 16px 18px;
+                border-top: 1px solid var(--line);
+            }
+            .body h3 {
+                font-size: 17px;
+                margin: 18px 0 8px;
+            }
+            .goal {
+                margin: 14px 0 0;
+                padding-left: 12px;
+                border-left: 4px solid var(--acc2);
+            }
+            label.step {
+                display: flex;
+                gap: 10px;
+                align-items: flex-start;
+                padding: 7px 0;
+                cursor: pointer;
+            }
+            label.step input {
+                margin-top: 5px;
+                width: 18px;
+                height: 18px;
+                accent-color: var(--acc);
+                flex: none;
+            }
+            label.step input:checked + span {
+                color: var(--mute);
+                text-decoration: line-through;
+            }
+            .proj {
+                background: var(--bg);
+                border: 1px dashed var(--acc);
+                border-radius: 10px;
+                padding: 4px 14px 10px;
+                margin-top: 14px;
+            }
+            ul.tips {
+                margin: 6px 0 0;
+                padding-left: 20px;
+                color: var(--mute);
+            }
+            code,
+            pre {
+                font-family: ui-monospace, Menlo, Consolas, monospace;
+                font-size: 13px;
+                background: var(--code);
+                border-radius: 6px;
+            }
+            code {
+                padding: 1px 5px;
+            }
+            pre {
+                padding: 12px;
+                overflow-x: auto;
+                margin: 8px 0;
+                white-space: pre;
+            }
+            .tbl {
+                overflow-x: auto;
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 14px;
+                min-width: 560px;
+            }
+            th,
+            td {
+                border-bottom: 1px solid var(--line);
+                padding: 7px 8px;
+                text-align: left;
+                vertical-align: top;
+            }
+            @media (prefers-reduced-motion: reduce) {
+                .bar i {
+                    transition: none;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="wrap">
+            <h1>Gen AI with Python: learning plan</h1>
+            <p class="lead">
+                Ten phases, from basic Python to shipping AI-assisted projects
+                like an engineer. Tick each step as you finish it. Progress
+                saves in this browser.
+            </p>
+            <div class="top">
+                <div class="bar"><i id="bar"></i></div>
+                <div class="row">
+                    <span id="stat">0 of 0 steps done</span
+                    ><span
+                        ><button id="exp">Expand all</button>
+                        <button id="rst">Reset</button></span
+                    >
+                </div>
+            </div>
+            <div id="app"></div>
+        </div>
+        <script>
+            var P = [
+                {
+                    t: "Python and tooling basics",
+                    w: "Weeks 1-2",
+                    g: "Write small Python programs comfortably and set up a clean dev environment.",
+                    s: [
+                        "Install Python 3.11+, VS Code, and Git; create a GitHub account",
+                        "Learn <code>venv</code> and <code>uv</code> (or pip) for isolated environments",
+                        "Syntax: variables, types, f-strings, lists, dicts, sets, loops, functions",
+                        "Files, JSON, exceptions, and type hints",
+                        "Classes and dataclasses; modules and packages",
+                        "Install <code>requests</code> / <code>httpx</code> and call a public REST API",
+                        "Store secrets in a <code>.env</code> file with <code>python-dotenv</code>; add <code>.env</code> to <code>.gitignore</code>",
+                        "Use <code>pytest</code> for one small test",
+                    ],
+                    p: [
+                        "Number guessing game and a CLI to-do app (JSON file storage)",
+                        "Weather or news fetcher that calls a public API and prints a clean summary",
+                        "Expense tracker CLI with a saved JSON file and a few tests",
+                    ],
+                    n: [
+                        "Do not skip type hints and Pydantic later; they matter a lot for LLM outputs.",
+                        "Commit to Git after every working step.",
+                    ],
+                },
+                {
+                    t: "LLM fundamentals",
+                    w: "Week 3",
+                    g: "Understand what an LLM is doing so that later decisions make sense.",
+                    s: [
+                        "Tokens, context window, temperature, top_p, max tokens",
+                        "Roles: system, user, assistant, tool messages",
+                        "Why models hallucinate; knowledge cutoff; stateless calls",
+                        "Model families: small vs large, reasoning vs fast, open-weight vs closed",
+                        "Cost basics: input vs output tokens, caching, batch pricing",
+                        "Try several models in a web playground and compare answers to the same prompt",
+                    ],
+                    p: [
+                        "Token and cost calculator: paste text, count tokens (<code>tiktoken</code>), estimate cost per provider",
+                    ],
+                    n: [
+                        "Keep a notes file of prompts that worked and failed. It becomes your own prompt library.",
+                    ],
+                },
+                {
+                    t: "Cloud providers: Groq, OpenRouter, paid APIs",
+                    w: "Weeks 4-5",
+                    g: "Call any hosted model from Python and swap providers with minimal code change.",
+                    s: [
+                        "Get free keys: Groq (fast, free tier) and OpenRouter (one key, many models, some free)",
+                        "Get one paid key (OpenAI, Anthropic, or Google Gemini) with a small spending cap",
+                        "Use the <code>openai</code> SDK with a custom <code>base_url</code>: Groq and OpenRouter are OpenAI-compatible",
+                        "Use the official Anthropic SDK once to see how it differs",
+                        "Build a <code>get_client(provider)</code> helper so the provider is a config value",
+                        "Streaming responses, retries with backoff, timeouts, and rate-limit handling",
+                        "Log tokens and cost per call into a CSV or SQLite file",
+                        "Learn async calls with <code>asyncio</code> to run several requests in parallel",
+                    ],
+                    p: [
+                        "Multi-provider chat CLI: type <code>/model groq</code> or <code>/model openrouter</code> to switch",
+                        "Model comparison tool: send one prompt to 3 models and show answer, latency, and cost side by side",
+                    ],
+                    x: "providers",
+                    n: [
+                        "Never hard-code keys. Set spending limits on paid accounts from day one.",
+                        "Free tiers have rate limits; expect 429 errors and handle them.",
+                    ],
+                },
+                {
+                    t: "Local models with Ollama",
+                    w: "Weeks 6-7",
+                    g: "Run open models on your own machine and use them from Python exactly like cloud ones.",
+                    s: [
+                        "Check your hardware: RAM, GPU VRAM. As a rough guide, 8 GB RAM fits 3B-8B models at 4-bit quantization",
+                        "Install Ollama; run <code>ollama pull llama3.2</code> then <code>ollama run llama3.2</code>",
+                        "Learn commands: <code>ollama list</code>, <code>ps</code>, <code>rm</code>, <code>show</code>",
+                        "Call it from Python through the OpenAI SDK at <code>http://localhost:11434/v1</code> (api_key can be any string)",
+                        "Also try the official <code>ollama</code> Python package",
+                        "Understand quantization (Q4, Q8), model size vs quality, and context length settings",
+                        "Write a <code>Modelfile</code> to bake in a system prompt and parameters",
+                        "Pull an embedding model (<code>nomic-embed-text</code>) and a coding model; compare with cloud results",
+                        "Optional: try LM Studio or llama.cpp to see what Ollama wraps",
+                    ],
+                    p: [
+                        "Offline private chatbot with memory in SQLite, runnable with no internet",
+                        "Add <code>local</code> to your provider helper so one app can run on Groq, OpenRouter, a paid API, or Ollama",
+                    ],
+                    n: [
+                        "Small local models are weaker at tool use and long reasoning. Use them for privacy, cost, and learning; use cloud models for hard tasks.",
+                        "If it is slow, reduce model size or context length first.",
+                    ],
+                },
+                {
+                    t: "Prompting and structured output",
+                    w: "Weeks 8-9",
+                    g: "Get reliable, machine-readable results from a model.",
+                    s: [
+                        "Write clear system prompts: role, task, constraints, output format",
+                        "Few-shot examples; step-by-step instructions; delimiters",
+                        "JSON mode / structured outputs; validate with Pydantic",
+                        "Retry loop: on validation failure, send the error back to the model",
+                        "Function (tool) calling: define a tool schema, execute it, return the result",
+                        "Version your prompts in files, not inside code strings",
+                        "Prompt injection basics: never trust model or user text as instructions for tools",
+                    ],
+                    p: [
+                        "Resume or invoice parser: messy text in, validated JSON out",
+                        "Tool-using assistant with 3 tools: calculator, weather lookup, file reader",
+                    ],
+                    n: [
+                        "Test every prompt on 10+ varied inputs, not one lucky example.",
+                    ],
+                },
+                {
+                    t: "Embeddings and RAG",
+                    w: "Weeks 10-11",
+                    g: "Let a model answer from your own documents.",
+                    s: [
+                        "Embeddings and cosine similarity (build one by hand with numpy)",
+                        "Chunking strategies: size, overlap, by heading",
+                        "Vector stores: start with Chroma or SQLite + sqlite-vec; later try FAISS or pgvector",
+                        "Pipeline: load, chunk, embed, store, retrieve, generate with citations",
+                        "Hybrid search (keyword + vector) and reranking",
+                        "Measure retrieval: does the right chunk appear in the top 5?",
+                        "Fully local RAG using Ollama for both embeddings and generation",
+                    ],
+                    p: [
+                        "Chat with your PDFs or notes, with source citations",
+                        "Codebase Q&A bot over one of your own repos",
+                    ],
+                    n: [
+                        "Most bad RAG answers are retrieval problems, not model problems. Inspect retrieved chunks first.",
+                    ],
+                },
+                {
+                    t: "Agents and workflows",
+                    w: "Weeks 12-14",
+                    g: "Build systems where a model plans, calls tools, and loops until done.",
+                    s: [
+                        "Write a raw agent loop yourself: model, tool call, result, repeat, stop condition",
+                        "Add max-step limits, timeouts, and error handling to the loop",
+                        "Prefer simple workflows (chaining, routing, parallel steps) before full agents",
+                        "Short-term memory (message history) vs long-term memory (database)",
+                        "Try one framework after the raw version: LangGraph, OpenAI Agents SDK, or PydanticAI",
+                        "Learn MCP (Model Context Protocol): build a tiny MCP server and connect it to a client",
+                        "Human-in-the-loop approval before risky actions (delete, send, pay)",
+                        "Trace every step with logs so you can replay a run",
+                    ],
+                    p: [
+                        "Research agent: searches the web, reads pages, writes a cited report",
+                        "Personal assistant agent that manages files or a calendar with approval prompts",
+                    ],
+                    n: [
+                        "An agent is a loop plus tools. If you cannot explain your loop, a framework will not save you.",
+                    ],
+                },
+                {
+                    t: "Building projects with AI help (context engineering)",
+                    w: "Weeks 15-16",
+                    g: "Use AI coding tools well: give them the right context and control the output.",
+                    s: [
+                        "Pick a coding assistant (Claude Code, Cursor, Copilot, Codex, or Aider) and learn its basics",
+                        "Write a spec before coding: problem, users, features, non-goals, acceptance checks",
+                        "Create an <code>AGENTS.md</code> (or <code>CLAUDE.md</code>) at the repo root; see template below",
+                        "Add a short architecture note and folder map the AI can read first",
+                        "Work in small tasks: plan first, review the plan, then implement one step",
+                        "Keep a <code>PLAN.md</code> or task list the AI updates as it works",
+                        "Start fresh sessions often; paste only the context that matters",
+                        "Review every diff yourself; run tests and the app before accepting",
+                        "Commit after each good step so you can roll back",
+                        "Write reusable prompts or commands for repeated jobs (add tests, review, refactor)",
+                    ],
+                    p: [
+                        "Rebuild an earlier project (for example the RAG bot) using spec + AGENTS.md + small AI-assisted steps, then compare quality and time",
+                    ],
+                    x: "agents",
+                    n: [
+                        "Context beats cleverness: the AI only knows what is in front of it.",
+                        "Tell it what NOT to do (do not add dependencies, do not touch the db schema) as clearly as what to do.",
+                    ],
+                },
+                {
+                    t: "Architecture and engineering decisions",
+                    w: "Weeks 17-18",
+                    g: "Make sound design choices instead of accepting the first thing the AI suggests.",
+                    s: [
+                        "Ask first: does this need an LLM at all? Rules or plain code are cheaper and more reliable",
+                        "Choose model by task: small and cheap for classification, strong for reasoning",
+                        "Decide workflow vs agent; start with the simplest that works",
+                        "Design for provider swaps: one thin client layer, config-driven model names",
+                        "Plan data flow: what is sent to third parties, what stays local, what is stored",
+                        "Cost and latency budget per request; use caching and smaller models where possible",
+                        "Pick stack: FastAPI backend, SQLite or Postgres, a simple frontend (Streamlit or Next.js)",
+                        "Write short ADRs (architecture decision records): context, options, decision, trade-offs",
+                        "Ask the AI to argue against your design and list failure modes, then decide yourself",
+                        "Plan fallbacks: model down, rate limit, bad output, timeout",
+                    ],
+                    p: [
+                        "Write ADRs for your earlier project, then refactor it behind a clean provider interface and a FastAPI endpoint",
+                    ],
+                    x: "adr",
+                    n: [
+                        "The AI can propose options; you own the decision and its consequences.",
+                    ],
+                },
+                {
+                    t: "Debugging, evals, and safety",
+                    w: "Weeks 19-20",
+                    g: "Find out why it failed, prove that it works, and keep it safe.",
+                    s: [
+                        "Log full prompts, responses, tool calls, tokens, and latency for every request",
+                        "Reproduce failures: save the exact input and run with temperature 0",
+                        "Debug in layers: input, retrieval, prompt, model, parsing, tool, output",
+                        "Debug AI-written code: read the error, share the traceback plus relevant files, ask for the cause before the fix",
+                        "Build an eval set of 20-50 real cases with expected results",
+                        "Automate evals in <code>pytest</code>; compare prompts or models by score, not by feel",
+                        "Use an LLM as a judge carefully, spot-checking with your own review",
+                        "Try a tracing tool (Langfuse or similar) once",
+                        "Security: keep secrets out of prompts and repos, validate tool inputs, limit tool permissions, defend against prompt injection",
+                        "Monitor cost: set alerts and per-user limits",
+                    ],
+                    p: [
+                        "Add an eval suite and tracing to your best project, then improve a score by changing the prompt or model and prove it",
+                    ],
+                    n: [
+                        "If you cannot measure it, you cannot tell whether a change made it better.",
+                    ],
+                },
+                {
+                    t: "Capstone and shipping",
+                    w: "Weeks 21-24",
+                    g: "Ship one real, documented project.",
+                    s: [
+                        "Choose a real problem (yours or a friend's); write the spec and ADRs",
+                        "Build the MVP using your AGENTS.md workflow",
+                        "Add tests, evals, logging, and error handling",
+                        "Containerize with Docker; add a <code>README</code> with setup, architecture diagram, and demo GIF",
+                        "Deploy (Render, Railway, Fly.io, or a VPS) with secrets in env vars",
+                        "Publish on GitHub and write a short post about what you learned",
+                        "Collect feedback from 3 users and plan v2",
+                    ],
+                    p: [
+                        "Your capstone: for example a RAG assistant for a niche domain, a coding helper, or an agent that automates a boring workflow",
+                    ],
+                    n: [
+                        "Finishing and shipping one project teaches more than starting five.",
+                    ],
+                },
+            ];
+            var X = {
+                providers:
+                    '<h3>Provider cheat sheet</h3><div class="tbl"><table><tr><th>Provider</th><th>base_url</th><th>Good for</th></tr><tr><td>Groq</td><td><code>https://api.groq.com/openai/v1</code></td><td>Very fast open models, free tier</td></tr><tr><td>OpenRouter</td><td><code>https://openrouter.ai/api/v1</code></td><td>One key for many models, some free</td></tr><tr><td>Ollama (local)</td><td><code>http://localhost:11434/v1</code></td><td>Private, offline, no cost per call</td></tr><tr><td>OpenAI / others</td><td>provider default</td><td>Strong paid models, tools, vision</td></tr></table></div><pre>from openai import OpenAI\nimport os\nCFG = {\n  "groq": ("https://api.groq.com/openai/v1", "GROQ_API_KEY"),\n  "openrouter": ("https://openrouter.ai/api/v1", "OPENROUTER_API_KEY"),\n  "local": ("http://localhost:11434/v1", None),\n}\ndef get_client(name):\n    url, key = CFG[name]\n    return OpenAI(base_url=url, api_key=os.getenv(key) if key else "ollama")\n\nr = get_client("groq").chat.completions.create(\n    model="MODEL_NAME_FROM_PROVIDER_DOCS",\n    messages=[{"role":"user","content":"Hello"}])\nprint(r.choices[0].message.content)</pre><p class="meta">Model names change often; copy current ones from each provider\'s docs.</p>',
+                agents: '<h3>AGENTS.md starter template</h3><pre># Project: &lt;name&gt;\n## What this is\nOne paragraph: purpose, users, current stage.\n## Stack\nPython 3.12, FastAPI, SQLite, pytest. Package manager: uv.\n## Commands\n- Run: uv run uvicorn app.main:app --reload\n- Test: uv run pytest\n- Lint: uv run ruff check .\n## Structure\napp/ (api, services, llm client), tests/, docs/adr/\n## Rules\n- Read docs/adr/ before changing architecture.\n- All LLM calls go through app/llm/client.py.\n- Add or update tests for every change.\n- Do not add dependencies or change the DB schema without asking.\n- Never commit secrets; use .env.\n## Workflow\nPlan first, wait for approval, implement one small step, run tests, summarize.\n## Definition of done\nTests pass, lint clean, README updated if behavior changed.</pre><h3>System prompt skeleton</h3><pre>Role: who the assistant is.\nTask: what to do, in order.\nContext: facts it must use.\nConstraints: what to avoid; when to say "I don\'t know".\nOutput format: exact schema or style.\nExamples: 1-3 good input/output pairs.</pre>',
+                adr: "<h3>ADR template</h3><pre># ADR-001: &lt;decision title&gt;\nStatus: proposed | accepted | superseded\nContext: what problem and constraints?\nOptions: A, B, C with pros and cons\nDecision: what we chose and why\nConsequences: costs, risks, what to revisit later</pre>",
+            };
+            var KEY = "genai-plan-v1",
+                st = {};
+            try {
+                st = JSON.parse(localStorage.getItem(KEY) || "{}");
+            } catch (e) {
+                st = {};
+            }
+            function save() {
+                try {
+                    localStorage.setItem(KEY, JSON.stringify(st));
+                } catch (e) {}
+            }
+            function li(a) {
+                return a
+                    .map(function (x) {
+                        return "<li>" + x + "</li>";
+                    })
+                    .join("");
+            }
+            function render() {
+                var h = "";
+                P.forEach(function (p, i) {
+                    h +=
+                        '<details class="phase" id="ph' +
+                        i +
+                        '" ' +
+                        (i === 0 ? "open" : "") +
+                        '><summary><span class="badge">' +
+                        i +
+                        '</span><span><h2 style="font-size:20px">' +
+                        p.t +
+                        '</h2><span class="meta">' +
+                        p.w +
+                        '</span></span><span class="pct" id="pc' +
+                        i +
+                        '"></span></summary><div class="body">';
+                    h +=
+                        '<p class="goal"><b>Goal:</b> ' +
+                        p.g +
+                        "</p><h3>Steps</h3>";
+                    p.s.forEach(function (s, j) {
+                        var k = i + "-" + j;
+                        h +=
+                            '<label class="step"><input type="checkbox" data-k="' +
+                            k +
+                            '"' +
+                            (st[k] ? " checked" : "") +
+                            "><span>" +
+                            s +
+                            "</span></label>";
+                    });
+                    h +=
+                        '<div class="proj"><h3>Projects to build</h3><ul class="tips" style="color:inherit">' +
+                        li(p.p) +
+                        "</ul></div>";
+                    if (p.x) h += X[p.x];
+                    h +=
+                        '<h3>Keep in mind</h3><ul class="tips">' +
+                        li(p.n) +
+                        "</ul></div></details>";
+                });
+                document.getElementById("app").innerHTML = h;
+                upd();
+            }
+            function upd() {
+                var tot = 0,
+                    done = 0;
+                P.forEach(function (p, i) {
+                    var d = 0;
+                    p.s.forEach(function (s, j) {
+                        if (st[i + "-" + j]) d++;
+                    });
+                    tot += p.s.length;
+                    done += d;
+                    document.getElementById("pc" + i).textContent =
+                        d + "/" + p.s.length;
+                    document
+                        .getElementById("ph" + i)
+                        .classList.toggle("done", d === p.s.length);
+                });
+                document.getElementById("bar").style.width =
+                    (tot ? (done / tot) * 100 : 0) + "%";
+                document.getElementById("stat").textContent =
+                    done +
+                    " of " +
+                    tot +
+                    " steps done (" +
+                    Math.round(tot ? (done / tot) * 100 : 0) +
+                    "%)";
+            }
+            document
+                .getElementById("app")
+                .addEventListener("change", function (e) {
+                    var k = e.target.getAttribute("data-k");
+                    if (k) {
+                        if (e.target.checked) st[k] = 1;
+                        else delete st[k];
+                        save();
+                        upd();
+                    }
+                });
+            var open = false;
+            document.getElementById("exp").onclick = function () {
+                open = !open;
+                document
+                    .querySelectorAll("details.phase")
+                    .forEach(function (d) {
+                        d.open = open;
+                    });
+                this.textContent = open ? "Collapse all" : "Expand all";
+            };
+            document.getElementById("rst").onclick = function () {
+                if (confirm("Clear all progress?")) {
+                    st = {};
+                    save();
+                    render();
+                }
+            };
+            render();
+        </script>
+    </body>
+</html>
