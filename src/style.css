@@ -2568,3 +2568,10 @@ footer {
 .category-filter select {
   width: 100%;
 }
+
+.engineering-plan-nav{display:flex;align-items:center;gap:10px;margin:15px 7px 20px;padding:11px 10px;border:1px solid #ddd8c9;border-radius:10px;background:linear-gradient(135deg,#f1eee4,#faf9f4);color:#33372b;text-decoration:none;font-size:11px;font-weight:650;transition:transform .18s,border-color .18s}
+.engineering-plan-nav:hover,.engineering-plan-cta:hover{transform:translateY(-1px);border-color:#c6a47b}
+.engineering-plan-number{width:30px;height:30px;display:grid;place-items:center;border-radius:8px;background:#3f4837;color:#f7f4e9;font:600 10px "DM Mono",monospace}
+.engineering-plan-nav>span:nth-child(2){flex:1}.engineering-plan-nav small{display:block;margin-top:3px;color:#7c806f;font-size:9px;font-weight:450}.engineering-plan-nav svg{color:#d9784e}
+.engineering-plan-cta{max-width:390px;margin-top:19px;padding:13px 15px;display:flex;align-items:center;gap:14px;border:1px solid #ddd7c6;border-radius:11px;background:#f0eee5;color:#33372b;text-decoration:none;transition:transform .18s,border-color .18s}
+.engineering-plan-cta span{display:block;flex:1}.engineering-plan-cta b{display:block;font-size:11px;font-weight:700}.engineering-plan-cta small{display:block;color:#7b806f;font-size:9px;margin-top:4px}.engineering-plan-cta svg{color:#d9784e}

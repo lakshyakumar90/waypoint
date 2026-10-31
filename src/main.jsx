@@ -308,6 +308,11 @@ function App() {
             </button>
           ))}
         </nav>
+        <a className="engineering-plan-nav" href="/waypoint/engineering-plan/">
+          <span className="engineering-plan-number">40</span>
+          <span>Engineering sprint<small>Engineering + DSA</small></span>
+          <ArrowUpRight size={15} />
+        </a>
         <div className="nav-label phase-label">LEARNING TRACKS</div>
         <div className="track-nav">
           {["All tracks", ...tracks].map((p, i) => (
@@ -429,6 +434,12 @@ function App() {
                       ? "Your learning belongs to you. Keep a backup of your progress."
                       : "Big ambitions, small steps. Your personal path to becoming a better builder."}
               </p>
+              {view === "My learning path" && (
+                <a className="engineering-plan-cta" href="/waypoint/engineering-plan/">
+                  <span><b>Open the 40-Day Engineering Sprint</b><small>Engineering roadmap + daily DSA practice</small></span>
+                  <ArrowUpRight size={17} />
+                </a>
+              )}
             </div>
             <div className="intro-art" aria-hidden="true">
               <div className="art-orbit" />
