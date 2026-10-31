@@ -4,6 +4,8 @@ Personal learning dashboard built with React, Vite, Tailwind CSS v4, and Motion.
 
 Live: https://lakshyakumar90.github.io/waypoint/
 
+Engineering sprint + DSA plan: https://lakshyakumar90.github.io/waypoint/engineering-plan/
+
 ## Curriculum
 
 135 topics and 899 learning steps across seven tracks:

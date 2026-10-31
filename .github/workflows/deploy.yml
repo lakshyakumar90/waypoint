@@ -24,6 +24,12 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+      - name: Build the 40-day engineering plan
+        run: |
+          npm install --prefix engineering-plan --no-audit --no-fund
+          npm run build --prefix engineering-plan
+          mkdir -p dist/engineering-plan
+          cp -R engineering-plan/dist/. dist/engineering-plan/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
